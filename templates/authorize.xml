@@ -1,0 +1,122 @@
+<AuthorizeTransaction xmlns="https://www.pagador.com.br/webservice/pagador">
+  <request>
+
+    <RequestId>{{.RequestId}}</RequestId>
+    <Version>1.1</Version>
+
+    <OrderData>
+      <MerchantId>{{.MerchantId}}</MerchantId>
+      <OrderId>{{.OrderId}}</OrderId>
+      {{if .BraspagOrderId}}
+        <BraspagOrderId>{{.BraspagOrderId}}</BraspagOrderId>
+      {{else}}
+        <BraspagOrderId xsi:nil="true" />
+      {{end}}
+    </OrderData>
+
+    <CustomerData>
+      <CustomerIdentity>{{.CustomerId}}</CustomerIdentity>
+      <CustomerName>{{.CustomerName}}</CustomerName>
+      <CustomerEmail>{{.CustomerEmail}}</CustomerEmail>
+      {{if .CustomerAddress.Street}}
+        <CustomerAddressData>
+            <Street>{{.CustomerAddress.Street}}</Street>
+            <Number>{{.CustomerAddress.Number}}</Number>
+            {{if .CustomerAddress.Complement}}
+              <Complement>{{.CustomerAddress.Complement}}</Complement>
+            {{else}}
+              <Complement xsi:nil="true"/>
+            {{end}}
+            <District>{{.CustomerAddress.District}}</District>
+            <ZipCode>{{.CustomerAddress.ZIPCode}}</ZipCode>
+        </CustomerAddressData>
+      {{else}}
+        <CustomerAddressData xsi:nil="true" />
+      {{end}}
+      {{if .DeliveryAddress.Street}}
+        <DeliveryAddressData>
+            <Street>{{.DeliveryAddress.Street}}</Street>
+            <Number>{{.DeliveryAddress.Number}}</Number>
+            {{if .DeliveryAddress.Complement}}
+              <Complement>{{.DeliveryAddress.Complement}}</Complement>
+            {{else}}
+              <Complement xsi:nil="true"/>
+            {{end}}
+            <District>{{.DeliveryAddress.District}}</District>
+            <ZipCode>{{.DeliveryAddress.ZIPCode}}</ZipCode>
+        </DeliveryAddressData>
+      {{else}}
+        <DeliveryAddressData xsi:nil="true" />
+      {{end}}
+    </CustomerData>
+
+    <PaymentDataCollection>
+      {% if is_billet %}
+        <PaymentDataRequest xsi:type="BoletoDataRequest">
+          <PaymentMethod>{{ payment_method }}</PaymentMethod>
+          <Amount>{{ amount }}</Amount>
+          <Currency>{{ currency }}</Currency>
+          <Country>{{ country }}</Country>
+          {% if boleto_number %}
+            <BoletoNumber>{{ boleto_number }}</BoletoNumber>
+          {% endif %}
+          {% if boleto_instructions %}
+            <BoletoInstructions>{{ boleto_instructions }}</BoletoInstructions>
+          {% endif %}
+
+          {% if boleto_expiration_date %}
+              <BoletoExpirationDate>{{ boleto_expiration_date }}</BoletoExpirationDate>
+          {% endif %}
+
+          {% if soft_descriptor %}
+            <AdditionalDataCollection>
+              <AdditionalDataRequest>
+                <Name>SoftDescriptor</Name>
+                <Value>{{ soft_descriptor }}</Value>
+              </AdditionalDataRequest>
+            </AdditionalDataCollection>
+          {% else %}
+            <AdditionalDataCollection xsi:nil="true" />
+          {% endif %}
+        </PaymentDataRequest>
+      {% else %}
+        {% for transaction in transactions %}
+          <PaymentDataRequest xsi:type="CreditCardDataRequest">
+            <PaymentMethod>{{ transaction.payment_method }}</PaymentMethod>
+            <Amount>{{ transaction.amount }}</Amount>
+            <Currency>{{ transaction.currency }}</Currency>
+            <Country>{{ transaction.country }}</Country>
+
+            <NumberOfPayments>{{ transaction.number_of_payments }}</NumberOfPayments>
+            <PaymentPlan>{{ transaction.payment_plan }}</PaymentPlan>
+            <TransactionType>{{ transaction.transaction_type }}</TransactionType>
+            {% if transaction.card_number %}
+              <CardHolder>{{ transaction.card_holder }}</CardHolder>
+              <CardNumber>{{ transaction.card_number }}</CardNumber>
+              <CardSecurityCode>{{ transaction.card_security_code }}</CardSecurityCode>
+              <CardExpirationDate>{{ transaction.card_exp_date }}</CardExpirationDate>
+              {% if transaction.save_card %}
+                <SaveCreditCard>{{ transaction.save_card }}</SaveCreditCard>
+              {% endif %}
+            {% endif %}
+
+            {% if transaction.card_token %}
+              <CreditCardToken>{{ transaction.card_token }}</CreditCardToken>
+            {% endif %}
+
+            {% if transaction.soft_descriptor %}
+              <AdditionalDataCollection>
+                <AdditionalDataRequest>
+                  <Name>SoftDescriptor</Name>
+                  <Value>{{ transaction.soft_descriptor }}</Value>
+                </AdditionalDataRequest>
+              </AdditionalDataCollection>
+            {% else %}
+              <AdditionalDataCollection xsi:nil="true" />
+            {% endif %}
+          </PaymentDataRequest>
+        {% endfor %}
+      {% endif %}
+    </PaymentDataCollection>
+  </request>
+</AuthorizeTransaction>
