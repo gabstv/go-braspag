@@ -7,8 +7,19 @@ const (
 	SERVICE_QUERY       = "/services/pagadorQuery.asmx"
 	SERVICE_TRANSACTION = "/webservice/pagadorTransaction.asmx"
 	//
-	SOAPACTION_AUTHORIZE_TRANSACTION = "https://www.pagador.com.br/webservice/pagador/AuthorizeTransaction"
+	SOAPACTION_AUTHORIZE_TRANSACTION  = "https://www.pagador.com.br/webservice/pagador/AuthorizeTransaction"
+	SOAPACTION_CAPTURE_CC_TRANSACTION = "https://www.pagador.com.br/webservice/pagador/CaptureCreditCardTransaction"
+	SOAPACTION_REFUND_CC_TRANSACTION  = "https://www.pagador.com.br/webservice/pagador/RefundCreditCardTransaction"
+	SOAPACTION_VOID_CC_TRANSACTION    = "https://www.pagador.com.br/webservice/pagador/VoidCreditCardTransaction"
 	//
+	PM_BOLETO_BRADESCO              = 6
+	PM_BOLETO_CAIXA                 = 7
+	PM_BOLETO_HSBC                  = 8
+	PM_BOLETO_BANCODOBRASIL         = 9
+	PM_BOLETO_BANCOREAL             = 10
+	PM_BOLETO_CITIBANK              = 13
+	PM_BOLETO_ITAU                  = 14
+	PM_BOLETO_SANTANDER             = 124
 	PM_CIELO_VISAELECTRON           = 123
 	PM_CIELO_VISA                   = 500
 	PM_CIELO_MASTERCARD             = 501
@@ -52,4 +63,19 @@ const (
 	CCDRSTAT_NOT_AUTHORIZED = 2 // byte? // Transação não Autorizada, pela Adquirente.
 	CCDRSTAT_DEQUAL_ERROR   = 3 // byte? // Transação com erro Desqualificante.
 	CCDRSTAT_WAITING        = 4 // byte? // Transação aguardando resposta.
+	//
+	PAYMENTPLAN_AVISTA                      = 0
+	PAYMENTPLAN_PARCEL_ESTABELECIMENTO      = 1
+	PAYMENTPLAN_PARCEL_EMISSOR              = 2
+	PAYMENTPLAN_IATA_PARCEL_ESTABELECIMENTO = 3 // SOMENTE COMPANHIAS AÉREAS
+	PAYMENTPLAN_IATA_PARCEL_EMISSOR         = 4 // SOMENTE COMPANHIAS AÉREAS
+	PAYMENTPLAN_IATA_AVISTA                 = 5 // SOMENTE COMPANHIAS AÉREAS
+	//
+	TRTYPE_INVALID           = 0
+	TRTYPE_PRE               = 1
+	TRTYPE_AUTO              = 2
+	TRTYPE_PRE_AUTHENTICATE  = 3 // 3DS (?)
+	TRTYPE_AUTO_AUTHENTICATE = 4
+	TRTYPE_PRE_RECURRING     = 5
+	TRTYPE_AUTO_RECURRING    = 6
 )

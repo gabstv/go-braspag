@@ -22,7 +22,7 @@ func (ws *WebService) url(service string) string {
 	return URLPROD + service
 }
 
-func (ws *WebService) Authorize(req AuthTxRequest) (*AuthorizeTransactionResponse, error) {
+func (ws *WebService) authorize(req *authorizeTransactionRequest) (*AuthorizeTransactionResponse, error) {
 	if len(req.MerchantId) < 1 {
 		req.MerchantId = ws.merchantid
 	}
