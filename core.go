@@ -1,10 +1,9 @@
 package braspag
 
 import (
-	//"encoding/xml"
+	"code.google.com/p/go-uuid/uuid"
 	"fmt"
-	"html/template"
-	"io/ioutil"
+	"text/template"
 	"time"
 )
 
@@ -15,11 +14,13 @@ var (
 func getplate(tpl string) (*template.Template, error) {
 	tpl0 := tpls[tpl]
 	if tpl0 == nil {
-		f, err := ioutil.ReadFile("templates/" + tpl + ".xml")
-		if err != nil {
-			return nil, err
+		var f string
+		var err error
+		switch tpl {
+		case "authorize":
+			f = string(templates_authorize_xml)
 		}
-		tpl0, err = template.New(tpl).Parse(string(f))
+		tpl0, err = template.New(tpl).Parse(f)
 		if err != nil {
 			return nil, err
 		}
@@ -40,6 +41,27 @@ type AuthTxRequest struct {
 	DeliveryAddress Address
 	BoletoPayData   PayDataRequest
 	CCPayData       []PayDataRequest
+	//
+	Currency string
+	Country  string
+}
+
+func (ws *WebService) NewAuthTxRequest(orderid string) AuthTxRequest {
+	v := AuthTxRequest{}
+	v.RequestId = uuid.New()
+	v.MerchantId = ws.merchantid
+	v.OrderId = orderid
+	v.Currency = "BRL"
+	v.Country = "BRA"
+	return v
+}
+
+func (a *AuthTxRequest) SetBoleto(amount float64, method int, def BoletoDef) {
+	a.BoletoPayData.Amount = amount
+	a.BoletoPayData.Country = a.Country
+	a.BoletoPayData.Currency = a.Currency
+	a.BoletoPayData.Method = method
+	a.BoletoPayData.BoletoDef = def
 }
 
 type Address struct {
@@ -51,7 +73,7 @@ type Address struct {
 }
 
 type PayDataRequest struct {
-	Method    string
+	Method    int
 	Amount    float64
 	Currency  string
 	Country   string

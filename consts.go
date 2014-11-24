@@ -47,9 +47,9 @@ const (
 	PM_SIMULATED_EUR                = 996
 	PM_SIMULATED_BRL                = 997
 	//
-	CCDRSTAT_CAPTURED       = byte(0) // Transação Capturada
-	CCDRSTAT_AUTHORIZED     = byte(1) // Transação Autorizada, pendente de captura.
-	CCDRSTAT_NOT_AUTHORIZED = byte(2) // Transação não Autorizada, pela Adquirente.
-	CCDRSTAT_DEQUAL_ERROR   = byte(3) // Transação com erro Desqualificante.
-	CCDRSTAT_WAITING        = byte(4) // Transação aguardando resposta.
+	CCDRSTAT_CAPTURED       = 0 // byte? // Transação Capturada
+	CCDRSTAT_AUTHORIZED     = 1 // byte? // Transação Autorizada, pendente de captura.
+	CCDRSTAT_NOT_AUTHORIZED = 2 // byte? // Transação não Autorizada, pela Adquirente.
+	CCDRSTAT_DEQUAL_ERROR   = 3 // byte? // Transação com erro Desqualificante.
+	CCDRSTAT_WAITING        = 4 // byte? // Transação aguardando resposta.
 )

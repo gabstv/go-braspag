@@ -3,6 +3,7 @@ package braspag
 import (
 	"bytes"
 	"github.com/gabstv/go-soap"
+	"log"
 )
 
 type WebService struct {
@@ -22,6 +23,9 @@ func (ws *WebService) url(service string) string {
 }
 
 func (ws *WebService) Authorize(req AuthTxRequest) (*AuthorizeTransactionResponse, error) {
+	if len(req.MerchantId) < 1 {
+		req.MerchantId = ws.merchantid
+	}
 	plate, err := getplate("authorize")
 	if err != nil {
 		return nil, err
@@ -29,11 +33,13 @@ func (ws *WebService) Authorize(req AuthTxRequest) (*AuthorizeTransactionRespons
 	buffer := new(bytes.Buffer)
 	err = plate.Execute(buffer, req)
 
+	log.Println(buffer.String())
+
 	if err != nil {
 		return nil, err
 	}
 
-	env, err := soap.Marshal(buffer.Bytes())
+	env, err := soap.Marshal(buffer.String())
 
 	if err != nil {
 		return nil, err
@@ -47,6 +53,7 @@ func (ws *WebService) Authorize(req AuthTxRequest) (*AuthorizeTransactionRespons
 
 	txr := &AuthorizeTransactionResponse{}
 
+	log.Println(env.Body.Data)
 	err = env.Unmarshal(txr)
 
 	if err != nil {

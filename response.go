@@ -25,7 +25,7 @@ type OrderDataResponse struct {
 type PaymentDataResponse struct {
 	BraspagTransactionId string
 	Amount               int64
-	PaymentMethod        int16
+	PaymentMethod        int
 }
 
 type CreditCardDataResponse struct {
@@ -34,7 +34,7 @@ type CreditCardDataResponse struct {
 	ReturnCode            string
 	ReturnMessage         string
 	ProofOfSale           string
-	Status                byte
+	Status                int
 	CreditCardToken       string
 	ServiceTaxAmount      string
 	AuthenticationUrl     string
@@ -44,7 +44,7 @@ type DebitCardDataResponse struct {
 	AcquirerTransactionId string
 	ReturnCode            string
 	ReturnMessage         string
-	Status                byte
+	Status                int
 	AuthenticationUrl     string
 }
 

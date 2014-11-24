@@ -51,72 +51,72 @@
     </CustomerData>
 
     <PaymentDataCollection>
-      {% if is_billet %}
+      {{if .BoletoPayData.Country}}
         <PaymentDataRequest xsi:type="BoletoDataRequest">
-          <PaymentMethod>{{ payment_method }}</PaymentMethod>
-          <Amount>{{ amount }}</Amount>
-          <Currency>{{ currency }}</Currency>
-          <Country>{{ country }}</Country>
-          {% if boleto_number %}
-            <BoletoNumber>{{ boleto_number }}</BoletoNumber>
-          {% endif %}
-          {% if boleto_instructions %}
-            <BoletoInstructions>{{ boleto_instructions }}</BoletoInstructions>
-          {% endif %}
+          <PaymentMethod>{{.BoletoPayData.Method}}</PaymentMethod>
+          <Amount>{{.BoletoPayData.Amount}}</Amount>
+          <Currency>{{.BoletoPayData.Currency}}</Currency>
+          <Country>{{.BoletoPayData.Country}}</Country>
+          {{if .BoletoPayData.BoletoDef.Number}}
+            <BoletoNumber>{{.BoletoPayData.BoletoDef.Number}}</BoletoNumber>
+          {{end}}
+          {{if .BoletoPayData.BoletoDef.Instructions}}
+            <BoletoInstructions>{{.BoletoPayData.BoletoDef.Instructions}}</BoletoInstructions>
+          {{end}}
 
-          {% if boleto_expiration_date %}
-              <BoletoExpirationDate>{{ boleto_expiration_date }}</BoletoExpirationDate>
-          {% endif %}
+          {{if .BoletoPayData.BoletoDef.ExpirationDate}}
+              <BoletoExpirationDate>{{.BoletoPayData.BoletoDef.ExpirationDate}}</BoletoExpirationDate>
+          {{end}}
 
-          {% if soft_descriptor %}
+          {{if .BoletoPayData.BoletoDef.SoftDescriptor}}
             <AdditionalDataCollection>
               <AdditionalDataRequest>
                 <Name>SoftDescriptor</Name>
-                <Value>{{ soft_descriptor }}</Value>
+                <Value>{{.BoletoPayData.BoletoDef.SoftDescriptor}}</Value>
               </AdditionalDataRequest>
             </AdditionalDataCollection>
-          {% else %}
+          {{else}}
             <AdditionalDataCollection xsi:nil="true" />
-          {% endif %}
+          {{end}}
         </PaymentDataRequest>
-      {% else %}
-        {% for transaction in transactions %}
+      {{else}}
+        {{with .CCPayData}}{{range .}}
           <PaymentDataRequest xsi:type="CreditCardDataRequest">
-            <PaymentMethod>{{ transaction.payment_method }}</PaymentMethod>
-            <Amount>{{ transaction.amount }}</Amount>
-            <Currency>{{ transaction.currency }}</Currency>
-            <Country>{{ transaction.country }}</Country>
+            <PaymentMethod>{{.Method}}</PaymentMethod>
+            <Amount>{{.Amount}}</Amount>
+            <Currency>{{.Currency}}</Currency>
+            <Country>{{.Country}}</Country>
 
-            <NumberOfPayments>{{ transaction.number_of_payments }}</NumberOfPayments>
-            <PaymentPlan>{{ transaction.payment_plan }}</PaymentPlan>
-            <TransactionType>{{ transaction.transaction_type }}</TransactionType>
-            {% if transaction.card_number %}
-              <CardHolder>{{ transaction.card_holder }}</CardHolder>
-              <CardNumber>{{ transaction.card_number }}</CardNumber>
-              <CardSecurityCode>{{ transaction.card_security_code }}</CardSecurityCode>
-              <CardExpirationDate>{{ transaction.card_exp_date }}</CardExpirationDate>
-              {% if transaction.save_card %}
-                <SaveCreditCard>{{ transaction.save_card }}</SaveCreditCard>
-              {% endif %}
-            {% endif %}
+            <NumberOfPayments>{{.CCDef.NumberOfPayments}}</NumberOfPayments>
+            <PaymentPlan>{{.CCDef.PaymentPlan}}</PaymentPlan>
+            <TransactionType>{{.CCDef.TransactionType}}</TransactionType>
+            {{if .CCDef.CardNumber}}
+              <CardHolder>{{.CCDef.CardHolder}}</CardHolder>
+              <CardNumber>{{.CCDef.CardNumber}}</CardNumber>
+              <CardSecurityCode>{{.CCDef.CardSecurityCode}}</CardSecurityCode>
+              <CardExpirationDate>{{.CCDef.CardExpDate}}</CardExpirationDate>
+              {{if .CCDef.SaveCard}}
+                <SaveCreditCard>{{.CCDef.SaveCard}}</SaveCreditCard>
+              {{end}}
+            {{end}}
 
-            {% if transaction.card_token %}
-              <CreditCardToken>{{ transaction.card_token }}</CreditCardToken>
-            {% endif %}
+            {{if .CCDef.CardToken}}
+              <CreditCardToken>{{.CCDef.CardToken}}</CreditCardToken>
+            {{end}}
 
-            {% if transaction.soft_descriptor %}
+            {{if .CCDef.SoftDescriptor}}
               <AdditionalDataCollection>
                 <AdditionalDataRequest>
                   <Name>SoftDescriptor</Name>
-                  <Value>{{ transaction.soft_descriptor }}</Value>
+                  <Value>{{.CCDef.SoftDescriptor}}</Value>
                 </AdditionalDataRequest>
               </AdditionalDataCollection>
-            {% else %}
+            {{else}}
               <AdditionalDataCollection xsi:nil="true" />
-            {% endif %}
+            {{end}}
           </PaymentDataRequest>
-        {% endfor %}
-      {% endif %}
+        {{end}}{{end}}
+      {{end}}
     </PaymentDataCollection>
   </request>
 </AuthorizeTransaction>
