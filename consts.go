@@ -7,6 +7,8 @@ const (
 	SERVICE_QUERY       = "/services/pagadorQuery.asmx"
 	SERVICE_TRANSACTION = "/webservice/pagadorTransaction.asmx"
 	//
+	SOAPACTION_AUTHORIZE_TRANSACTION = "https://www.pagador.com.br/webservice/pagador/AuthorizeTransaction"
+	//
 	PM_CIELO_VISAELECTRON           = 123
 	PM_CIELO_VISA                   = 500
 	PM_CIELO_MASTERCARD             = 501
@@ -44,4 +46,10 @@ const (
 	PM_SIMULATED_USD                = 995
 	PM_SIMULATED_EUR                = 996
 	PM_SIMULATED_BRL                = 997
+	//
+	CCDRSTAT_CAPTURED       = byte(0) // Transação Capturada
+	CCDRSTAT_AUTHORIZED     = byte(1) // Transação Autorizada, pendente de captura.
+	CCDRSTAT_NOT_AUTHORIZED = byte(2) // Transação não Autorizada, pela Adquirente.
+	CCDRSTAT_DEQUAL_ERROR   = byte(3) // Transação com erro Desqualificante.
+	CCDRSTAT_WAITING        = byte(4) // Transação aguardando resposta.
 )

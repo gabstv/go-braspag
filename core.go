@@ -1,9 +1,32 @@
 package braspag
 
 import (
+	//"encoding/xml"
 	"fmt"
+	"html/template"
+	"io/ioutil"
 	"time"
 )
+
+var (
+	tpls = make(map[string]*template.Template)
+)
+
+func getplate(tpl string) (*template.Template, error) {
+	tpl0 := tpls[tpl]
+	if tpl0 == nil {
+		f, err := ioutil.ReadFile("templates/" + tpl + ".xml")
+		if err != nil {
+			return nil, err
+		}
+		tpl0, err = template.New(tpl).Parse(string(f))
+		if err != nil {
+			return nil, err
+		}
+		tpls[tpl] = tpl0
+	}
+	return tpl0, nil
+}
 
 type AuthTxRequest struct {
 	RequestId       string
