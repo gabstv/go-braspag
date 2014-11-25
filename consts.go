@@ -12,6 +12,8 @@ const (
 	SOAPACTION_REFUND_CC_TRANSACTION  = "https://www.pagador.com.br/webservice/pagador/RefundCreditCardTransaction"
 	SOAPACTION_VOID_CC_TRANSACTION    = "https://www.pagador.com.br/webservice/pagador/VoidCreditCardTransaction"
 	//
+	SOAPACTION_QUERY_GETBOLETODATA = "https://www.pagador.com.br/query/pagadorquery/GetBoletoData"
+	//
 	PM_BOLETO_BRADESCO              = 6
 	PM_BOLETO_CAIXA                 = 7
 	PM_BOLETO_HSBC                  = 8

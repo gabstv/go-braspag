@@ -1,0 +1,9 @@
+<GetBoletoData xmlns="https://www.pagador.com.br/query/pagadorquery">
+	<boletoDataRequest>
+		<RequestId>{{.RequestId}}</RequestId>
+    	<Version>1.1</Version>
+
+		<MerchantId>{{.MerchantId}}</MerchantId>
+		<BraspagTransactionId>{{.BraspagTransactionId}}</BraspagTransactionId>
+	</boletoDataRequest>
+</GetBoletoData>

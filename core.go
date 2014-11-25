@@ -1,7 +1,10 @@
 package braspag
 
 import (
+	"bytes"
 	"fmt"
+	"github.com/gabstv/go-soap"
+	"log"
 	"text/template"
 	"time"
 )
@@ -20,6 +23,8 @@ func getplate(tpl string) (*template.Template, error) {
 			f = string(templates_authorize_xml)
 		case "capturecc":
 			f = string(templates_capturecc_xml)
+		case "query_getboletodata":
+			f = string(templates_query_getboletodata_xml)
 		}
 		tpl0, err = template.New(tpl).Parse(f)
 		if err != nil {
@@ -28,6 +33,25 @@ func getplate(tpl string) (*template.Template, error) {
 		tpls[tpl] = tpl0
 	}
 	return tpl0, nil
+}
+
+func soap_tpl_env(tpl string, content interface{}) (*soap.Envelope, error) {
+	plate, err := getplate(tpl)
+	if err != nil {
+		return nil, err
+	}
+	buffer := new(bytes.Buffer)
+	err = plate.Execute(buffer, content)
+
+	log.Println(buffer.String())
+
+	if err != nil {
+		return nil, err
+	}
+
+	env, err := soap.Marshal(buffer.String())
+
+	return env, err
 }
 
 type Address struct {

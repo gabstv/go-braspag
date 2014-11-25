@@ -1,7 +1,6 @@
 package braspag
 
 import (
-	"bytes"
 	"encoding/xml"
 	"github.com/gabstv/go-soap"
 	"log"
@@ -10,10 +9,19 @@ import (
 type WebService struct {
 	merchantid   string
 	homologation bool
+	Query        wSQuery
+}
+
+type wSQuery struct {
+	parent *WebService
 }
 
 func NewWebService(merchantid string, homologation bool) *WebService {
-	return &WebService{merchantid, homologation}
+	ws := &WebService{}
+	ws.merchantid = merchantid
+	ws.homologation = homologation
+	ws.Query.parent = ws
+	return ws
 }
 
 func (ws *WebService) url(service string) string {
@@ -27,20 +35,7 @@ func (ws *WebService) authorize(req *authorizeTransactionRequest) (*AuthorizeTra
 	if len(req.MerchantId) < 1 {
 		req.MerchantId = ws.merchantid
 	}
-	plate, err := getplate("authorize")
-	if err != nil {
-		return nil, err
-	}
-	buffer := new(bytes.Buffer)
-	err = plate.Execute(buffer, req)
-
-	log.Println(buffer.String())
-
-	if err != nil {
-		return nil, err
-	}
-
-	env, err := soap.Marshal(buffer.String())
+	env, err := soap_tpl_env("authorize", req)
 
 	if err != nil {
 		return nil, err
@@ -71,20 +66,7 @@ func (ws *WebService) capturecc(req *CaptureCCReqDef) (*CaptureCreditCardTransac
 	if len(req.xmlTpl.MerchantId) < 1 {
 		req.xmlTpl.MerchantId = ws.merchantid
 	}
-	plate, err := getplate("capturecc")
-	if err != nil {
-		return nil, err
-	}
-	buffer := new(bytes.Buffer)
-	err = plate.Execute(buffer, req.xmlTpl)
-
-	log.Println(buffer.String())
-
-	if err != nil {
-		return nil, err
-	}
-
-	env, err := soap.Marshal(buffer.String())
+	env, err := soap_tpl_env("capturecc", req.xmlTpl)
 
 	if err != nil {
 		return nil, err
