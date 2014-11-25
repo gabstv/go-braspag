@@ -48,8 +48,8 @@ func (ws *WebService) authorize(req *authorizeTransactionRequest) (*AuthorizeTra
 	}
 
 	txr := struct {
-		XMLName                    xml.Name `xml:"AuthorizeTransactionResponse"`
-		AuthorizeTransactionResult AuthorizeTransactionResponse
+		XMLName                    xml.Name                     `xml:"AuthorizeTransactionResponse"`
+		AuthorizeTransactionResult AuthorizeTransactionResponse `xml:"AuthorizeTransactionResult"`
 	}{}
 
 	log.Println(env.Body.Data)

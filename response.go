@@ -5,7 +5,7 @@ import (
 )
 
 type AuthorizeTransactionResponse struct {
-	XMLName       xml.Name `xml:"AuthorizeTransactionResponse>AuthorizeTransactionResult"`
+	XMLName       xml.Name `xml:"AuthorizeTransactionResult"`
 	CorrelationId string
 	Success       bool
 	Errors        []ErrorReportDataResponse `xml:"ErrorReportDataCollection>ErrorReportDataResponse"`

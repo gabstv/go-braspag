@@ -14,127 +14,170 @@ type authorizeTransactionRequest struct {
 	CustomerEmail   string
 	CustomerAddress Address
 	DeliveryAddress Address
-	BoletoPayData   PayDataRequest
-	CCPayData       []PayDataRequest
+	BoletoPayData   *PayDataRequest
+	CCPayData       []*PayDataRequest
 	//
 	Currency string
 	Country  string
 }
 
-type AuthorizeTxRequestDef struct {
+type AuTxReqDef struct {
 	xmlTpl *authorizeTransactionRequest
 	parent *WebService
 }
 
-type AuthorizeTxRequestCardDef struct {
-	parent *AuthorizeTxRequestDef
-	def    CCDef
-	amount int64
-	method int
+type AuTxReqDefCC struct {
+	parent *AuTxReqDef
+	xmlTpl *PayDataRequest
 }
 
-func (def *AuthorizeTxRequestCardDef) SetInstallments(val int) *AuthorizeTxRequestCardDef {
+type AuTxReqDefBoleto struct {
+	parent *AuTxReqDef
+	xmlTpl *PayDataRequest
+}
+
+func (def *AuTxReqDefCC) SetInstallments(val int) *AuTxReqDefCC {
 	return def.SetNumberOfPayments(val)
 }
 
-func (def *AuthorizeTxRequestCardDef) SetNumberOfPayments(val int) *AuthorizeTxRequestCardDef {
-	def.def.NumberOfPayments = val
+func (def *AuTxReqDefCC) SetNumberOfPayments(val int) *AuTxReqDefCC {
+	def.xmlTpl.CCDef.NumberOfPayments = val
 	return def
 }
 
-func (def *AuthorizeTxRequestCardDef) SetPaymentPlan(val int) *AuthorizeTxRequestCardDef {
-	def.def.PaymentPlan = val
+func (def *AuTxReqDefCC) SetPaymentPlan(val int) *AuTxReqDefCC {
+	def.xmlTpl.CCDef.PaymentPlan = val
 	return def
 }
 
-func (def *AuthorizeTxRequestCardDef) SetAVista() *AuthorizeTxRequestCardDef {
-	def.def.PaymentPlan = PAYMENTPLAN_AVISTA
+func (def *AuTxReqDefCC) SetAVista() *AuTxReqDefCC {
+	def.xmlTpl.CCDef.PaymentPlan = PAYMENTPLAN_AVISTA
 	return def
 }
 
-func (def *AuthorizeTxRequestCardDef) SetParceladoEstabelecimento() *AuthorizeTxRequestCardDef {
-	def.def.PaymentPlan = PAYMENTPLAN_PARCEL_ESTABELECIMENTO
+func (def *AuTxReqDefCC) SetParceladoEstabelecimento() *AuTxReqDefCC {
+	def.xmlTpl.CCDef.PaymentPlan = PAYMENTPLAN_PARCEL_ESTABELECIMENTO
 	return def
 }
 
-func (def *AuthorizeTxRequestCardDef) SetParceladoEmissor() *AuthorizeTxRequestCardDef {
-	def.def.PaymentPlan = PAYMENTPLAN_PARCEL_EMISSOR
+func (def *AuTxReqDefCC) SetParceladoEmissor() *AuTxReqDefCC {
+	def.xmlTpl.CCDef.PaymentPlan = PAYMENTPLAN_PARCEL_EMISSOR
 	return def
 }
 
-func (def *AuthorizeTxRequestCardDef) SetType(transactionType int) *AuthorizeTxRequestCardDef {
-	def.def.TransactionType = transactionType
+func (def *AuTxReqDefCC) SetType(transactionType int) *AuTxReqDefCC {
+	def.xmlTpl.CCDef.TransactionType = transactionType
 	return def
 }
 
-func (def *AuthorizeTxRequestCardDef) SetHolder(holderName string) *AuthorizeTxRequestCardDef {
-	def.def.CardHolder = holderName
+func (def *AuTxReqDefCC) SetHolder(holderName string) *AuTxReqDefCC {
+	def.xmlTpl.CCDef.CardHolder = holderName
 	return def
 }
 
-func (def *AuthorizeTxRequestCardDef) SetNumber(number string) *AuthorizeTxRequestCardDef {
-	def.def.CardNumber = number
+func (def *AuTxReqDefCC) SetNumber(number string) *AuTxReqDefCC {
+	def.xmlTpl.CCDef.CardNumber = number
 	return def
 }
 
-func (def *AuthorizeTxRequestCardDef) SetCVC2(cvc2 string) *AuthorizeTxRequestCardDef {
-	def.def.CardSecurityCode = cvc2
+func (def *AuTxReqDefCC) SetCVC2(cvc2 string) *AuTxReqDefCC {
+	def.xmlTpl.CCDef.CardSecurityCode = cvc2
 	return def
 }
 
-func (def *AuthorizeTxRequestCardDef) SetExpDate(mmyyyy TimeMMYYYY) *AuthorizeTxRequestCardDef {
-	def.def.CardExpDate = mmyyyy
+func (def *AuTxReqDefCC) SetExpDate(mmyyyy TimeMMYYYY) *AuTxReqDefCC {
+	def.xmlTpl.CCDef.CardExpDate = mmyyyy
 	return def
 }
 
-func (def *AuthorizeTxRequestCardDef) SetSaveCard(save bool) *AuthorizeTxRequestCardDef {
-	def.def.SaveCard = save
+func (def *AuTxReqDefCC) SetSaveCard(save bool) *AuTxReqDefCC {
+	def.xmlTpl.CCDef.SaveCard = save
 	return def
 }
 
-func (def *AuthorizeTxRequestCardDef) SetCardToken(token string) *AuthorizeTxRequestCardDef {
-	def.def.CardToken = token
+func (def *AuTxReqDefCC) SetCardToken(token string) *AuTxReqDefCC {
+	def.xmlTpl.CCDef.CardToken = token
 	return def
 }
 
-func (def *AuthorizeTxRequestCardDef) SetSoftDescriptor(softDescriptor string) *AuthorizeTxRequestCardDef {
-	def.def.SoftDescriptor = softDescriptor
+func (def *AuTxReqDefCC) SetSoftDescriptor(softDescriptor string) *AuTxReqDefCC {
+	def.xmlTpl.CCDef.SoftDescriptor = softDescriptor
 	return def
 }
 
-func (def *AuthorizeTxRequestCardDef) SetAmount(amount float64) *AuthorizeTxRequestCardDef {
-	def.amount = int64((amount * 100.0))
+func (def *AuTxReqDefCC) SetAmount(amount float64) *AuTxReqDefCC {
+	def.xmlTpl.Amount = int64((amount * 100.0))
 	return def
 }
 
-func (def *AuthorizeTxRequestCardDef) SetMethod(method int) *AuthorizeTxRequestCardDef {
-	def.method = method
+func (def *AuTxReqDefCC) SetMethod(method int) *AuTxReqDefCC {
+	def.xmlTpl.Method = method
 	return def
 }
 
-func (def *AuthorizeTxRequestCardDef) Commit() {
-	pr := PayDataRequest{}
-	pr.Amount = def.amount
-	pr.Method = def.method
-	pr.Currency = def.parent.xmlTpl.Currency
-	pr.Country = def.parent.xmlTpl.Country
-	pr.CCDef = def.def
-	if def.parent.xmlTpl.CCPayData == nil {
-		def.parent.xmlTpl.CCPayData = make([]PayDataRequest, 0)
-		def.parent.xmlTpl.CCPayData = append(def.parent.xmlTpl.CCPayData, pr)
+func (def *AuTxReqDefCC) Parent() *AuTxReqDef {
+	return def.parent
+}
+
+func (def *AuTxReqDef) NewCard() *AuTxReqDefCC {
+	child := &AuTxReqDefCC{}
+	child.xmlTpl = &PayDataRequest{}
+	if def.xmlTpl.CCPayData == nil {
+		def.xmlTpl.CCPayData = make([]*PayDataRequest, 0)
 	}
-}
-
-func (def *AuthorizeTxRequestDef) CardDef() *AuthorizeTxRequestCardDef {
-	child := &AuthorizeTxRequestCardDef{}
+	def.xmlTpl.CCPayData = append(def.xmlTpl.CCPayData, child.xmlTpl)
+	//
+	child.xmlTpl.Currency = def.xmlTpl.Currency
+	child.xmlTpl.Country = def.xmlTpl.Country
+	//
 	child.parent = def
-	child.def.TransactionType = TRTYPE_PRE
-	child.def.NumberOfPayments = 1
+	child.xmlTpl.CCDef.TransactionType = TRTYPE_PRE
+	child.xmlTpl.CCDef.NumberOfPayments = 1
 	return child
 }
 
-func (ws *WebService) NewAuthorizeRequest(orderid string) *AuthorizeTxRequestDef {
-	v := &AuthorizeTxRequestDef{}
+func (def *AuTxReqDef) NewBoleto() *AuTxReqDefBoleto {
+	child := &AuTxReqDefBoleto{}
+	child.xmlTpl = &PayDataRequest{}
+	def.xmlTpl.BoletoPayData = child.xmlTpl
+	//
+	child.xmlTpl.Currency = def.xmlTpl.Currency
+	child.xmlTpl.Country = def.xmlTpl.Country
+	//
+	child.parent = def
+	return child
+}
+
+func (def *AuTxReqDefBoleto) SetAmount(amount float64) *AuTxReqDefBoleto {
+	def.xmlTpl.Amount = int64((amount * 100.0))
+	return def
+}
+
+func (def *AuTxReqDefBoleto) SetMethod(method int) *AuTxReqDefBoleto {
+	def.xmlTpl.Method = method
+	return def
+}
+
+// TODO: SetNumber
+
+func (def *AuTxReqDefBoleto) SetInstructions(instructions string) *AuTxReqDefBoleto {
+	def.xmlTpl.BoletoDef.Instructions = instructions
+	return def
+}
+
+func (def *AuTxReqDefBoleto) SetExpirationDate(expdate TimeMMDDYYYY) *AuTxReqDefBoleto {
+	def.xmlTpl.BoletoDef.ExpirationDate = expdate
+	return def
+}
+
+// TODO: SetSoftDescriptor
+
+func (def *AuTxReqDefBoleto) Parent() *AuTxReqDef {
+	return def.parent
+}
+
+func (ws *WebService) NewAuthorizeRequest(orderid string) *AuTxReqDef {
+	v := &AuTxReqDef{}
 	v.xmlTpl = &authorizeTransactionRequest{}
 	v.xmlTpl.RequestId = uuid.New()
 	v.xmlTpl.MerchantId = ws.merchantid
@@ -145,38 +188,24 @@ func (ws *WebService) NewAuthorizeRequest(orderid string) *AuthorizeTxRequestDef
 	return v
 }
 
-func (def *AuthorizeTxRequestDef) SetCustomerId(id string) *AuthorizeTxRequestDef {
+func (def *AuTxReqDef) SetCustomerId(id string) *AuTxReqDef {
 	def.xmlTpl.CustomerId = id
 	return def
 }
 
-func (def *AuthorizeTxRequestDef) SetCustomerName(name string) *AuthorizeTxRequestDef {
+func (def *AuTxReqDef) SetCustomerName(name string) *AuTxReqDef {
 	def.xmlTpl.CustomerName = name
 	return def
 }
 
-func (def *AuthorizeTxRequestDef) SetCustomerEmail(email string) *AuthorizeTxRequestDef {
+func (def *AuTxReqDef) SetCustomerEmail(email string) *AuTxReqDef {
 	def.xmlTpl.CustomerEmail = email
 	return def
 }
 
-func (def *AuthorizeTxRequestDef) Commit() *AuthorizeTxRequestDef {
-	return def
-}
-
-func (def *AuthorizeTxRequestDef) Submit() (*AuthorizeTransactionResponse, error) {
+func (def *AuTxReqDef) Submit() (*AuthorizeTransactionResponse, error) {
 	return def.parent.authorize(def.xmlTpl)
 }
-
-//func (ws *WebService) NewauthorizeTransactionRequest(orderid string) authorizeTransactionRequest {
-//	v := authorizeTransactionRequest{}
-//	v.RequestId = uuid.New()
-//	v.MerchantId = ws.merchantid
-//	v.OrderId = orderid
-//	v.Currency = "BRL"
-//	v.Country = "BRA"
-//	return v
-//}
 
 // TODO: replace this function
 func (a *authorizeTransactionRequest) SetBoleto(amount float64, method int, def BoletoDef) {

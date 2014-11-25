@@ -42,6 +42,7 @@ func (wsq *wSQuery) NewGetBoletoData(braspagtransactionid string) *QGetBoletoDat
 	def.parent = wsq
 	def.xmlTpl.MerchantId = wsq.parent.merchantid
 	def.xmlTpl.RequestId = uuid.New()
+	def.xmlTpl.BraspagTransactionId = braspagtransactionid
 	return def
 }
 

@@ -51,7 +51,7 @@
     </CustomerData>
 
     <PaymentDataCollection>
-      {{if .BoletoPayData.Country}}
+      {{if .BoletoPayData}}
         <PaymentDataRequest xsi:type="BoletoDataRequest">
           <PaymentMethod>{{.BoletoPayData.Method}}</PaymentMethod>
           <Amount>{{.BoletoPayData.Amount}}</Amount>
