@@ -1,10 +1,11 @@
 package braspag
 
 import (
-//"encoding/xml"
+	"encoding/xml"
 )
 
 type AuthorizeTransactionResponse struct {
+	XMLName       xml.Name `xml:"AuthorizeTransactionResponse>AuthorizeTransactionResult"`
 	CorrelationId string
 	Success       bool
 	Errors        []ErrorReportDataResponse `xml:"ErrorReportDataCollection>ErrorReportDataResponse"`
@@ -55,4 +56,24 @@ type BoletoDataResponse struct {
 	BarCodeNumber        string
 	Assigner             string
 	Message              string
+}
+
+type CaptureCreditCardTransactionResponse struct {
+	XMLName       xml.Name `xml:"CaptureCreditCardTransactionResult"`
+	CorrelationId string
+	Success       bool
+	Errors        []ErrorReportDataResponse `xml:"ErrorReportDataCollection>ErrorReportDataResponse"`
+	Transactions  []TransactionDataResponse `xml:"TransactionDataCollection>TransactionDataResponse"`
+}
+
+type TransactionDataResponse struct {
+	BraspagTransactionId  string
+	AcquirerTransactionId string
+	Amount                int64
+	AuthorizationCode     string
+	ProofOfSale           string
+	ReturnCode            string
+	ReturnMessage         string
+	Status                int
+	ServiceTaxAmount      string
 }

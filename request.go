@@ -22,3 +22,9 @@ type AdditionalDataRequest struct {
 	Name  string
 	Value string
 }
+
+type TransactionDataRequest struct {
+	BraspagTransactionId string
+	Amount               int64
+	ServiceTaxAmount     string //TODO: check
+}

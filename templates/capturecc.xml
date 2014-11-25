@@ -1,0 +1,17 @@
+<CaptureCreditCardTransaction xmlns="https://www.pagador.com.br/webservice/pagador">
+<request>
+	<RequestId>{{.RequestId}}</RequestId>
+    <Version>1.1</Version>
+	
+	<MerchantId>{{.MerchantId}}</MerchantId>
+	<TransactionDataCollection>
+		{{with .TransactionDataCollection}}{{range .}}
+		<TransactionDataRequest>
+			<BraspagTransactionId>{{.BraspagTransactionId}}</BraspagTransactionId>
+			<Amount>{{.Amount}}</Amount>
+			{{if .ServiceTaxAmount}}<ServiceTaxAmount>{{.ServiceTaxAmount}}</ServiceTaxAmount>{{end}}
+		</TransactionDataRequest>
+		{{end}}{{end}}
+	</TransactionDataCollection>
+</request>
+</CaptureCreditCardTransaction>
