@@ -13,6 +13,7 @@ const (
 	SOAPACTION_VOID_CC_TRANSACTION    = "https://www.pagador.com.br/webservice/pagador/VoidCreditCardTransaction"
 	//
 	SOAPACTION_QUERY_GETBOLETODATA = "https://www.pagador.com.br/query/pagadorquery/GetBoletoData"
+	SOAPACTION_QUERY_GETORDERDATA  = "https://www.pagador.com.br/query/pagadorquery/GetOrderData"
 	//
 	PM_BOLETO_BRADESCO              = 6
 	PM_BOLETO_CAIXA                 = 7

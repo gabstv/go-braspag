@@ -25,6 +25,8 @@ func getplate(tpl string) (*template.Template, error) {
 			f = string(templates_capturecc_xml)
 		case "query_getboletodata":
 			f = string(templates_query_getboletodata_xml)
+		case "query_getorderdata":
+			f = string(templates_query_getorderdata_xml)
 		}
 		tpl0, err = template.New(tpl).Parse(f)
 		if err != nil {

@@ -77,3 +77,25 @@ type TransactionDataResponse struct {
 	Status                int
 	ServiceTaxAmount      string
 }
+
+type OrderTransactionDataResponse struct {
+	BraspagTransactionId  string
+	OrderId               string
+	AcquirerTransactionId string
+	PaymentMethod         int
+	PaymentMethodName     string
+	ErrorCode             string
+	ErrorMessage          string
+	Amount                int64
+	AuthorizationCode     string
+	NumberOfPayments      int
+	Currency              string
+	Country               string
+	TransactionType       int    // original: byte
+	Status                int    // original: short
+	ReceivedDate          string // TODO: revisar tipo
+	CapturedDate          string // TODO: revisar tipo
+	VoidedDate            string // TODO: revisar tipo
+	CreditCardToken       string // identificador para usar no one-click-buy / just click
+	ProofOfSale           string // numero do comprovante de venda
+}

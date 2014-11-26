@@ -1,0 +1,9 @@
+<GetOrderData xmlns="https://www.pagador.com.br/query/pagadorquery">
+	<orderDataRequest>
+		<RequestId>{{.RequestId}}</RequestId>
+    	<Version>1.1</Version>
+
+		<MerchantId>{{.MerchantId}}</MerchantId>
+		<BraspagTransactionId>{{.BraspagTransactionId}}</BraspagTransactionId>
+	</orderDataRequest>
+</GetOrderData>
