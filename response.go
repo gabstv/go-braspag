@@ -27,6 +27,16 @@ type PaymentDataResponse struct {
 	BraspagTransactionId string
 	Amount               int64
 	PaymentMethod        int
+	// Credit Card
+	AcquirerTransactionId string
+	AuthorizationCode     string
+	ReturnCode            string
+	ReturnMessage         string
+	ProofOfSale           string
+	Status                int
+	CreditCardToken       string
+	ServiceTaxAmount      string
+	AuthenticationUrl     string
 }
 
 type CreditCardDataResponse struct {
