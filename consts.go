@@ -29,6 +29,9 @@ const (
 	PM_CIELO_AMEX                   = 502
 	PM_CIELO_DINERS                 = 503
 	PM_CIELO_ELO                    = 504
+	PM_CIELO_DISCOVER               = 543
+	PM_CIELO_JCB                    = 544
+	PM_CIELO_AURA                   = 545
 	PM_BANORTE_VISA                 = 505
 	PM_BANORTE_MASTERCARD           = 506
 	PM_BANORTE_DINERS               = 507
