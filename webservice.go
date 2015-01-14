@@ -3,13 +3,16 @@ package braspag
 import (
 	"encoding/xml"
 	"github.com/gabstv/go-soap"
+	"io"
 	"log"
 )
 
 type WebService struct {
-	merchantid   string
-	homologation bool
-	Query        wSQuery
+	merchantid       string
+	homologation     bool
+	Query            wSQuery
+	XMLRequestLogger io.Writer
+	XMLResultLogger  io.Writer
 }
 
 type wSQuery struct {
@@ -41,10 +44,18 @@ func (ws *WebService) authorize(req *authorizeTransactionRequest) (*AuthorizeTra
 		return nil, err
 	}
 
+	if ws.XMLRequestLogger != nil {
+		env.WriteTo(ws.XMLRequestLogger)
+	}
+
 	env, err = env.PostAdv(ws.url(SERVICE_TRANSACTION), soap.M{"SOAPAction": SOAPACTION_AUTHORIZE_TRANSACTION})
 
 	if err != nil {
 		return nil, err
+	}
+
+	if ws.XMLResultLogger != nil {
+		env.WriteTo(ws.XMLResultLogger)
 	}
 
 	txr := struct {
@@ -72,10 +83,18 @@ func (ws *WebService) capturecc(req *CaptureCCReqDef) (*CaptureCreditCardTransac
 		return nil, err
 	}
 
+	if ws.XMLRequestLogger != nil {
+		env.WriteTo(ws.XMLRequestLogger)
+	}
+
 	env, err = env.PostAdv(ws.url(SERVICE_TRANSACTION), soap.M{"SOAPAction": SOAPACTION_CAPTURE_CC_TRANSACTION})
 
 	if err != nil {
 		return nil, err
+	}
+
+	if ws.XMLResultLogger != nil {
+		env.WriteTo(ws.XMLResultLogger)
 	}
 
 	txr := struct {
